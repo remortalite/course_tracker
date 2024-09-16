@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.utils.translation import gettext_lazy as _
 
 from .models import User
@@ -16,4 +17,17 @@ class CreateUserView(CreateView):
         'title': _('Create user'),
         'header': _('Create user'),
         'button_name': _('Sign up'),
+    }
+
+
+class UpdateUserView(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'form.html'
+    success_url = reverse_lazy('home')
+    fields = ('first_name', 'last_name', 'username',)
+
+    extra_context = {
+        'title': _('Update user'),
+        'header': _('Update user'),
+        'button_name': _('Update'),
     }
