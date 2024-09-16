@@ -4,12 +4,36 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title|default:'Course tracker' }}</title>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
 </head>
 <body>
+
+<div class="container-flex bg-light">
+    <nav class="container navbar navbar-expand-lg nav-light">
+        <a class="navbar-brand" href="{% url 'home' %}">Course tracker</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav align-items-center">
+                <a class="nav-item nav-link" href="#">Main</a>
+                <a class="nav-item nav-link" href="#">Users</a>
+
+                {% if user.is_authenticated %}
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" class="nav-item nav-link" value="{% translate 'Logout' %}">
+                    </form>
+                {% else %}
+                    <a class="nav-item nav-link" href="#">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</div>
 
 <div class="container">
     {% block content %}
