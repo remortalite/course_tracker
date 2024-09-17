@@ -11,7 +11,7 @@ class CreateUserView(CreateView):
     model = User
     form_class = UserCreateForm
     template_name = 'form.html'
-    next_page = reverse_lazy('home')
+    success_url = reverse_lazy('home')
 
     extra_context = {
         'title': _('Create user'),

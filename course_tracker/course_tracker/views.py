@@ -1,12 +1,16 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.messages.views import SuccessMessageMixin
+from django.utils.translation import gettext_lazy as _
+
 from django.urls import reverse_lazy
 
 
-class LoginUserView(LoginView):
+class LoginUserView(SuccessMessageMixin, LoginView):
     authentication_form = AuthenticationForm
     template_name = 'form.html'
     next_page = reverse_lazy('home')
+    success_message = _('Login success')
 
     extra_context = {
         'title': 'Login',

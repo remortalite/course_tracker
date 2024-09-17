@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 
 class UsersTest(TestCase):
     fixtures = ['sample.json']
+
     def test_login_get(self):
         response = self.client.get(reverse_lazy('login'))
         self.assertEqual(response.status_code, HttpResponse.status_code)
