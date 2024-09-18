@@ -1,9 +1,9 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 from django.utils.translation import gettext_lazy as _
 
+from .mixins import LoginRequiredWithMsgMixin
 from .models import User
 from .forms import UserCreateForm
 
@@ -22,13 +22,15 @@ class CreateUserView(SuccessMessageMixin, CreateView):
     }
 
 
-class UpdateUserView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+class UpdateUserView(SuccessMessageMixin,
+                     LoginRequiredWithMsgMixin,
+                     UpdateView):
     model = User
     template_name = 'form.html'
     success_url = reverse_lazy('home')
     fields = ('first_name', 'last_name', 'username',)
 
-    permission_denied_message = _('You need to log in')
+    message_no_auth = _('You need to log in')
     success_message = _('User updated')
 
     extra_context = {
