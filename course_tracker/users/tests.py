@@ -3,21 +3,34 @@ from django.test import TestCase
 from django.urls import reverse_lazy
 
 from .models import User
+from fixtures import fixture_loader
 
 
 class UsersTest(TestCase):
     fixtures = ['sample.json']
 
-    def setUp(self):
-        self.user_data = {
-            'username': 'test_user',
-            'password': 'TQ3XxstZdj1CJf',
-        }
+    data = fixture_loader.load('course_tracker/'
+                               'fixtures/data.json')
 
-        self.user = User.objects.get(username='test_user')
+    def setUp(self):
+        self.user = User.objects.get(username=self.data['user']['username'])
+        self.another_user = User.objects.get(username='another_user')
 
     def _login(self):
-        self.client.login(**self.user_data)
+        self.client.login(username=self.data['user']['username'],
+                          password=self.data['user']['password'])
+
+    def test_unauthorized_get(self):
+        urls = [
+            reverse_lazy('users.update', kwargs={'pk': self.user.id}),
+        ]
+
+        for url in urls:
+            response = self.client.get(url, follow=True)
+
+            self.assertEqual(response.status_code, HttpResponse.status_code)
+            self.assertURLEqual(response.request['PATH_INFO'], reverse_lazy('login'))
+            self.assertIn(b'You need to log in', response.content)
 
     def test_login_get(self):
         response = self.client.get(reverse_lazy('login'))
@@ -27,7 +40,7 @@ class UsersTest(TestCase):
     def test_login_post(self):
         response = self.client.post(reverse_lazy('login'),
                                     follow=True,
-                                    data=self.user_data)
+                                    data=self.data['user'])
         self.assertEqual(response.status_code, HttpResponse.status_code)
         self.assertIn(b'Login success', response.content)
         self.assertRedirects(response, reverse_lazy('home'))
@@ -51,8 +64,8 @@ class UsersTest(TestCase):
                                     follow=True,
                                     data={
                                         'username': 'test_creation',
-                                        'password1': self.user_data['password'],
-                                        'password2': self.user_data['password'],
+                                        'password1': self.data['user']['password'],
+                                        'password2': self.data['user']['password'],
                                     })
 
         self.assertEqual(response.status_code, HttpResponse.status_code)
@@ -60,15 +73,6 @@ class UsersTest(TestCase):
         self.assertIn(b'User created', response.content)
 
         self.assertTrue(User.objects.filter(username='test_creation').exists())
-
-    def test_update_get_no_auth(self):
-        response = self.client.get(reverse_lazy('users.update',
-                                                kwargs={'pk': self.user.id}),
-                                   follow=True)
-
-        self.assertEqual(response.status_code, HttpResponse.status_code)
-        self.assertURLEqual(response.request['PATH_INFO'], reverse_lazy('login'))
-        # self.assertIn(b'You need to log in', response.content)
 
     def test_update_get_auth(self):
         self._login()
@@ -79,14 +83,10 @@ class UsersTest(TestCase):
 
         self.assertEqual(response.status_code, HttpResponse.status_code)
         self.assertIn(b'Update user', response.content)
-        self.assertIn(b'test_user', response.content)
+        self.assertIn(self.user.username.encode(), response.content)
 
     def test_update_post_no_auth(self):
-        another_user = User.objects.create_user(username='another_user',
-                                                password='another_password')
         url_for_user = reverse_lazy('users.update', kwargs={'pk': self.user.id})
-
-        # test unauth
         response = self.client.post(url_for_user,
                                     follow=True,
                                     data={
@@ -94,16 +94,14 @@ class UsersTest(TestCase):
                                         'username': 'test_update',
                                     })
         self.assertURLEqual(response.request['PATH_INFO'], reverse_lazy('login'))
-        # self.assertIn(b'You need to log in', response.content)
+        self.assertIn(b'You need to log in', response.content)
 
     def test_update_post_auth_restricted(self):
-        another_user = User.objects.create_user(username='another_user',
-                                                password='another_password')
         url_for_user = reverse_lazy('users.update', kwargs={'pk': self.user.id})
 
         # test auth, not authorized
-        self.client.login(username='another_user',
-                          password='another_password')
+        self.client.login(username=self.another_user.username,
+                          password=self.another_user.password)
         response = self.client.post(url_for_user,
                                     follow=True,
                                     data={
@@ -111,13 +109,12 @@ class UsersTest(TestCase):
                                         'username': 'test_update',
                                     })
         self.assertRedirects(response, reverse_lazy('home'))
-        # self.assertIn(b'Another user updation is forbidden',
-        #               response.content)
+        self.assertIn(b'Access forbidden',
+                      response.content)
 
     def test_update_post_auth_access(self):
         url_for_user = reverse_lazy('users.update', kwargs={'pk': self.user.id})
 
-        # authorized
         self._login()
 
         response = self.client.post(url_for_user,
@@ -131,6 +128,9 @@ class UsersTest(TestCase):
         self.assertRedirects(response, reverse_lazy('home'))
         self.assertIn(b'User updated', response.content)
 
-        self.assertFalse(User.objects.filter(username='test_user').exists())
+        self.assertFalse(
+            User.objects.filter(
+                username=self.data['user']['username']
+            ).exists())
         self.assertTrue(User.objects.get(username='test_update')
                         .first_name == 'Updated name')
