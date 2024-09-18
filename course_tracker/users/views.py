@@ -22,11 +22,14 @@ class CreateUserView(SuccessMessageMixin, CreateView):
     }
 
 
-class UpdateUserView(LoginRequiredMixin, UpdateView):
+class UpdateUserView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'form.html'
     success_url = reverse_lazy('home')
     fields = ('first_name', 'last_name', 'username',)
+
+    permission_denied_message = _('You need to log in')
+    success_message = _('User updated')
 
     extra_context = {
         'title': _('Update user'),
