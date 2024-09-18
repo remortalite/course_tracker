@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 from django.utils.translation import gettext_lazy as _
@@ -7,11 +8,12 @@ from .models import User
 from .forms import UserCreateForm
 
 
-class CreateUserView(CreateView):
+class CreateUserView(SuccessMessageMixin, CreateView):
     model = User
     form_class = UserCreateForm
     template_name = 'form.html'
     success_url = reverse_lazy('home')
+    success_message = _('User created')
 
     extra_context = {
         'title': _('Create user'),
