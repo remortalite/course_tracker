@@ -108,9 +108,8 @@ class UsersTest(TestCase):
                                         'first_name': 'Updated name',
                                         'username': 'test_update',
                                     })
-        self.assertRedirects(response, reverse_lazy('home'))
-        self.assertIn(b'Access forbidden',
-                      response.content)
+        self.assertURLEqual(response.request['PATH_INFO'], reverse_lazy('login'))
+        self.assertIn(b'You need to log in', response.content)
 
     def test_update_post_auth_access(self):
         url_for_user = reverse_lazy('users.update', kwargs={'pk': self.user.id})

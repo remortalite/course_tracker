@@ -1,7 +1,9 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 from django.utils.translation import gettext_lazy as _
+from django.contrib import messages
 
 from .mixins import LoginRequiredWithMsgMixin
 from .models import User
@@ -32,6 +34,7 @@ class UpdateUserView(SuccessMessageMixin,
 
     message_no_auth = _('You need to log in')
     success_message = _('User updated')
+    message_no_access = _('Access forbidden')
 
     extra_context = {
         'title': _('Update user'),
