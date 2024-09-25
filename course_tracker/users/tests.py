@@ -29,7 +29,8 @@ class UsersTest(TestCase):
             response = self.client.get(url, follow=True)
 
             self.assertEqual(response.status_code, HttpResponse.status_code)
-            self.assertURLEqual(response.request['PATH_INFO'], reverse_lazy('login'))
+            self.assertURLEqual(response.request['PATH_INFO'],
+                                reverse_lazy('login'))
             self.assertIn(b'You need to log in', response.content)
 
     def test_login_get(self):
@@ -64,8 +65,10 @@ class UsersTest(TestCase):
                                     follow=True,
                                     data={
                                         'username': 'test_creation',
-                                        'password1': self.data['user']['password'],
-                                        'password2': self.data['user']['password'],
+                                        'password1':
+                                            self.data['user']['password'],
+                                        'password2':
+                                            self.data['user']['password'],
                                     })
 
         self.assertEqual(response.status_code, HttpResponse.status_code)
@@ -86,18 +89,21 @@ class UsersTest(TestCase):
         self.assertIn(self.user.username.encode(), response.content)
 
     def test_update_post_no_auth(self):
-        url_for_user = reverse_lazy('users.update', kwargs={'pk': self.user.id})
+        url_for_user = reverse_lazy('users.update',
+                                    kwargs={'pk': self.user.id})
         response = self.client.post(url_for_user,
                                     follow=True,
                                     data={
                                         'first_name': 'Updated name',
                                         'username': 'test_update',
                                     })
-        self.assertURLEqual(response.request['PATH_INFO'], reverse_lazy('login'))
+        self.assertURLEqual(response.request['PATH_INFO'],
+                            reverse_lazy('login'))
         self.assertIn(b'You need to log in', response.content)
 
     def test_update_post_auth_restricted(self):
-        url_for_user = reverse_lazy('users.update', kwargs={'pk': self.user.id})
+        url_for_user = reverse_lazy('users.update',
+                                    kwargs={'pk': self.user.id})
 
         # test auth, not authorized
         self.client.login(username=self.another_user.username,
@@ -108,11 +114,13 @@ class UsersTest(TestCase):
                                         'first_name': 'Updated name',
                                         'username': 'test_update',
                                     })
-        self.assertURLEqual(response.request['PATH_INFO'], reverse_lazy('login'))
+        self.assertURLEqual(response.request['PATH_INFO'],
+                            reverse_lazy('login'))
         self.assertIn(b'You need to log in', response.content)
 
     def test_update_post_auth_access(self):
-        url_for_user = reverse_lazy('users.update', kwargs={'pk': self.user.id})
+        url_for_user = reverse_lazy('users.update',
+                                    kwargs={'pk': self.user.id})
 
         self._login()
 
