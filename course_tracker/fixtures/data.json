@@ -1,0 +1,14 @@
+{
+  "user": {
+    "first_name": "test_firstname",
+    "last_name": "test_lastname",
+    "username": "test_user",
+    "password": "TQ3XxstZdj1CJf"
+  },
+  "another_user": {
+    "first_name": "another_firstname",
+    "last_name": "another_lastname",
+    "username": "another_user",
+    "password": "TQ3XxstZdj1CJf"
+  }
+}
