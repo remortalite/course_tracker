@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
@@ -40,4 +40,14 @@ class CourseUpdateView(LoginRequiredWithMsgMixin, UpdateView):
     extra_context = {
         'header': _('Update course'),
         'button_name': _('Save'),
+    }
+
+class CourseDetailView(LoginRequiredWithMsgMixin, DetailView):
+    model = Course
+    fields = '__all__'
+
+    message_no_auth = _('Please log in')
+
+    extra_context = {
+        'header': _('Course detail'),
     }
