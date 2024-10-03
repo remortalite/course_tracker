@@ -1,4 +1,5 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
+from django.views.generic import (ListView, CreateView,
+                                  UpdateView, DetailView, DeleteView)
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
@@ -29,6 +30,7 @@ class CourseCreateView(LoginRequiredWithMsgMixin, CreateView):
         'button_name': _('Create'),
     }
 
+
 class CourseUpdateView(LoginRequiredWithMsgMixin, UpdateView):
     model = Course
     success_url = reverse_lazy('courses.home')
@@ -42,6 +44,7 @@ class CourseUpdateView(LoginRequiredWithMsgMixin, UpdateView):
         'button_name': _('Save'),
     }
 
+
 class CourseDetailView(LoginRequiredWithMsgMixin, DetailView):
     model = Course
     fields = '__all__'
@@ -51,6 +54,7 @@ class CourseDetailView(LoginRequiredWithMsgMixin, DetailView):
     extra_context = {
         'header': _('Course detail'),
     }
+
 
 class CourseDeleteView(LoginRequiredWithMsgMixin, DeleteView):
     model = Course
