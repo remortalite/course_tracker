@@ -7,6 +7,9 @@ from users.mixins import LoginRequiredWithMsgMixin
 
 class CoursesListView(LoginRequiredWithMsgMixin, ListView):
     model = Course
-    template_name = 'index.html'
 
     message_no_auth = _('Please log in')
+
+    extra_context = {
+        "header": "Courses",
+    }
