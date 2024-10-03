@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 
 {% load django_bootstrap5 %}
+{% load i18n %}
 
 {% block content %}
 
@@ -8,8 +9,8 @@
 
 <table class="table">
     <thead>
-        <th>Name</th>
-        <th>URL</th>
+        <th>{% trans 'Name' %}</th>
+        <th>{% trans 'URL' %}</th>
     </thead>
     <tbody>
         {% for obj in object_list %}

@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 
 {% load django_bootstrap5 %}
+{% load i18n %}
 
 {% block content %}
 
@@ -12,10 +13,10 @@
         <div class="card-body"><a href="{{ object.url }}">{{ object.url }}</a></div>
 
         <div class="card-footer">
-            <a class="card-link" href="{% url 'courses.update' pk=object.id %}">Update</a>
-            <a class="card-link" href="{% url 'courses.delete' pk=object.id %}">Delete</a>
+            <a class="card-link" href="{% url 'courses.update' pk=object.id %}">{% trans 'Update' %}</a>
+            <a class="card-link" href="{% url 'courses.delete' pk=object.id %}">{% trans 'Delete' %}</a>
         </div>
-        </div>
+    </div>
 </div>
 
 {% endblock content %}
