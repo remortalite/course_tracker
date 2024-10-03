@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
@@ -50,4 +50,16 @@ class CourseDetailView(LoginRequiredWithMsgMixin, DetailView):
 
     extra_context = {
         'header': _('Course detail'),
+    }
+
+class CourseDeleteView(LoginRequiredWithMsgMixin, DeleteView):
+    model = Course
+    template_name = 'form.html'
+    success_url = reverse_lazy('courses.home')
+
+    message_no_auth = _('Please log in')
+
+    extra_context = {
+        'header': _('Are you sure you want to delete the course?'),
+        'button_name': _('Yes, delete'),
     }
