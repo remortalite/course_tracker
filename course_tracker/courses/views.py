@@ -6,7 +6,7 @@ from .models import Course
 from users.mixins import LoginRequiredWithMsgMixin
 
 
-class CoursesListView(LoginRequiredWithMsgMixin, ListView):
+class CourseListView(LoginRequiredWithMsgMixin, ListView):
     model = Course
 
     message_no_auth = _('Please log in')
