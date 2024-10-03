@@ -21,12 +21,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav align-items-center">
-                <a class="nav-item nav-link" href="#">{% trans 'Users' %}</a>
-
                 {% if user.is_authenticated %}
+                    <a class="nav-item nav-link" href="{% url 'courses.home' %}">{% trans 'Courses' %}</a>
                     <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
-                        <input type="submit" class="nav-item nav-link" value="{% translate 'Logout' %}">
+                        <input type="submit" class="nav-item nav-link" value="{% trans 'Logout' %}">
                     </form>
                 {% else %}
                     <a class="nav-item nav-link" href="{% url 'login' %}">{% trans 'Login' %}</a>

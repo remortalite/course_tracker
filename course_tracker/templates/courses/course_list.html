@@ -1,0 +1,30 @@
+{% extends 'layout/base.html' %}
+
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block content %}
+
+<h1 class="h1">{{ header }}</h1>
+
+<table class="table">
+    <thead>
+        <th>{% trans 'Name' %}</th>
+        <th>{% trans 'URL' %}</th>
+    </thead>
+    <tbody>
+        {% for obj in object_list %}
+        <tr>
+            <td>
+                <a href="{% url 'courses.detail' pk=obj.id %}">{{ obj.name }}</a>
+            </td>
+            <td>
+                <a href="{{ obj.url }}">{{ obj.url }}</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock content %}
