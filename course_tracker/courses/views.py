@@ -13,7 +13,7 @@ class CourseListView(LoginRequiredWithMsgMixin, ListView):
     message_no_auth = _('Please log in')
 
     extra_context = {
-        "header": "Courses",
+        'header': 'Courses',
     }
 
 
