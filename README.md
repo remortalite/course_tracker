@@ -24,6 +24,8 @@ Steps to achieve:
 
 ### Step 1. MVP.
 
+#### 1.1
+
 The app contains minimal user managment and saving some basic info about courses.
 
 Models to realise: `User`, `Course`.
@@ -31,3 +33,16 @@ Models to realise: `User`, `Course`.
 Organize code with Makefile.
 
 Make some basic UI. Translations using *i18n*.
+
+#### 1.2
+
+The courses contain authors and can be private or open. The user can set visibility of a course.
+
+New model: Task.
+Contains fields: name, description, link, status
+
+There is a possibility to track progress.
+
+A progress can be visible on the main page.
+
+The Course contains Tasks.
