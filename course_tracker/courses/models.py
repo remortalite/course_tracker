@@ -7,6 +7,7 @@ from users.models import User
 class Course(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=128)
     url = models.CharField(verbose_name=_('URL'), max_length=255)
+    public = models.BooleanField(verbose_name=_('Public'), default=False)
 
     author = models.ForeignKey(to=User,
                                verbose_name=_('Author'),
