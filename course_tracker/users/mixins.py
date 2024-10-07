@@ -22,17 +22,6 @@ class EditMixin(AccessMixin):
             return super().dispatch(request, *args, **kwargs)
 
 
-class OnlyAuthorAccessIfPrivateMixin(UserPassesTestMixin):
-    def test_func(self):
-        if self.get_object().public:
-            return True
-        return self.get_object().author == self.request.user
-
-    def handle_no_permission(self):
-        messages.error(self.request, _('You have no access to the object'))
-        return redirect(reverse('home'))
-
-
 class OnlyAuthorAccessMixin(UserPassesTestMixin):
     def test_func(self):
         return self.get_object().author == self.request.user
@@ -40,3 +29,10 @@ class OnlyAuthorAccessMixin(UserPassesTestMixin):
     def handle_no_permission(self):
         messages.error(self.request, _('You have no access to the object'))
         return redirect(reverse('home'))
+
+
+class OnlyAuthorAccessIfPrivateMixin(OnlyAuthorAccessMixin):
+    def test_func(self):
+        if self.get_object().public:
+            return True
+        return super().test_func()
