@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
@@ -16,3 +16,7 @@ class TaskCreateView(CreateView):
         'header': _('Create task'),
         'button_name': _('Save'),
     }
+
+
+class TaskListView(ListView):
+    model = Task

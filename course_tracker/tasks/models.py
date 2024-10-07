@@ -6,9 +6,9 @@ from courses.models import Course
 
 class Task(models.Model):
     STATUS_CHOICES = (
-        ("INPROGRESS", _("In progress")),
-        ("FINISHED", _("Finished")),
-        ("FREEZED", _("Freezed")),
+        ("inprogress", _("In progress")),
+        ("finished", _("Finished")),
+        ("freezed", _("Freezed")),
     )
 
     name = models.CharField(verbose_name=_('Name'), max_length=128)
