@@ -27,10 +27,12 @@
             </table>
         </div>
 
+        {% if object.author == request.user %}
         <div class="card-footer">
             <a class="card-link" href="{% url 'courses.update' pk=object.id %}">{% trans 'Update' %}</a>
             <a class="card-link" href="{% url 'courses.delete' pk=object.id %}">{% trans 'Delete' %}</a>
         </div>
+        {% endif %}
     </div>
 </div>
 
