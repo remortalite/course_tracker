@@ -1,5 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin, UserPassesTestMixin
 from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
+from django.shortcuts import redirect, reverse
 
 
 class LoginRequiredWithMsgMixin(LoginRequiredMixin):
@@ -18,3 +20,23 @@ class EditMixin(AccessMixin):
         if request.user.id != kwargs['pk']:
             messages.error(request, self.messages_no_access)
             return super().dispatch(request, *args, **kwargs)
+
+
+class OnlyAuthorAccessIfPrivateMixin(UserPassesTestMixin):
+    def test_func(self):
+        if self.get_object().public:
+            return True
+        return self.get_object().author == self.request.user
+
+    def handle_no_permission(self):
+        messages.error(self.request, _('You have no access to the object'))
+        return redirect(reverse('home'))
+
+
+class OnlyAuthorAccessMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.get_object().author == self.request.user
+
+    def handle_no_permission(self):
+        messages.error(self.request, _('You have no access to the object'))
+        return redirect(reverse('home'))

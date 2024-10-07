@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 
 from .models import Course
-from users.mixins import LoginRequiredWithMsgMixin
+from users.mixins import LoginRequiredWithMsgMixin, OnlyAuthorAccessIfPrivateMixin, OnlyAuthorAccessMixin
 
 
 class CourseListView(LoginRequiredWithMsgMixin, ListView):
@@ -43,7 +43,7 @@ class CourseCreateView(LoginRequiredWithMsgMixin, CreateView):
         return super().form_valid(form, *args, **kwargs)
 
 
-class CourseUpdateView(LoginRequiredWithMsgMixin, UpdateView):
+class CourseUpdateView(LoginRequiredWithMsgMixin, OnlyAuthorAccessMixin, UpdateView):
     model = Course
     success_url = reverse_lazy('courses.home')
     template_name = 'form.html'
@@ -57,7 +57,7 @@ class CourseUpdateView(LoginRequiredWithMsgMixin, UpdateView):
     }
 
 
-class CourseDetailView(LoginRequiredWithMsgMixin, DetailView):
+class CourseDetailView(LoginRequiredWithMsgMixin, OnlyAuthorAccessIfPrivateMixin, DetailView):
     model = Course
     fields = '__all__'
 
@@ -68,7 +68,7 @@ class CourseDetailView(LoginRequiredWithMsgMixin, DetailView):
     }
 
 
-class CourseDeleteView(LoginRequiredWithMsgMixin, DeleteView):
+class CourseDeleteView(LoginRequiredWithMsgMixin, OnlyAuthorAccessMixin, DeleteView):
     model = Course
     template_name = 'form.html'
     success_url = reverse_lazy('courses.home')
