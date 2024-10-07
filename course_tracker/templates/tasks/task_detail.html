@@ -11,28 +11,25 @@
     <div class="card col-9">
         <div class="h3 card-header">{{ object.name }}</div>
         <div class="card-body">
+            <p>{{ object.description }}</p>
             <table class="table">
                 <tr>
-                    <th>URL</th>
-                    <td><a href="{{ object.url }}">{{ object.url }}</a></td>
+                    <th>Link</th>
+                    <td>
+                        {% if object.link %}
+                        <a href="{{ object.link }}">{{ object.link }}</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
-                    <th>Author</th>
-                    <td>{{ object.author }}</td>
+                    <th>Status</th>
+                    <td>{{ object.get_status_display }}</td>
                 </tr>
                 <tr>
-                    <th>Public</th>
-                    <td>{{ object.public }}</td>
+                    <th>Course</th>
+                    <td>{{ object.course }}</td>
                 </tr>
             </table>
-            <div>
-                <h4>Tasks:</h4>
-                <ul>
-                    {% for task in object.tasks.all %}
-                    <li><a href="{% url 'tasks.detail' pk=task.id %}">{{ task }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
         </div>
 
         {% if object.author == request.user %}
