@@ -15,7 +15,7 @@ class Task(models.Model):
     description = models.TextField(verbose_name=_('Description'), null=True, blank=True)
     link = models.CharField(verbose_name=_('Link'), max_length=255, null=True, blank=True)
     status = models.CharField(verbose_name=_('Status'), max_length=12, choices=STATUS_CHOICES)
-    course = models.ForeignKey(verbose_name=_('Course'), to=Course, on_delete=models.PROTECT, null=True, blank=True)
+    course = models.ForeignKey(verbose_name=_('Course'), to=Course, on_delete=models.PROTECT, null=True, blank=True, related_name='courses')
 
     def __str__(self):
         return self.name

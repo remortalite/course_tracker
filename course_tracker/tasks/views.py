@@ -20,3 +20,7 @@ class TaskCreateView(CreateView):
 
 class TaskListView(ListView):
     model = Task
+
+    extra_context = {
+        'header': _('Tasks'),
+    }

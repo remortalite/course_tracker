@@ -27,7 +27,9 @@
                 {{ obj.get_status_display }}
             </td>
             <td>
-                {{ obj.course|default:'' }}
+                {% if obj.course %}
+                <a href="{% url 'courses.detail' pk=obj.course.id %}">{{ obj.course|default:'' }}</a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
