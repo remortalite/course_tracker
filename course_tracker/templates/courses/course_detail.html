@@ -25,6 +25,14 @@
                     <td>{{ object.public }}</td>
                 </tr>
             </table>
+            <div>
+                <h4>Tasks:</h4>
+                <ul>
+                    {% for task in object.tasks.all %}
+                    <li><a href="{% url 'tasks.detail' pk=task.id %}">{{ task }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
 
         {% if object.author == request.user %}

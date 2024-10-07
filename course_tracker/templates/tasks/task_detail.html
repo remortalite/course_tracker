@@ -11,18 +11,19 @@
     <div class="card col-9">
         <div class="h3 card-header">{{ object.name }}</div>
         <div class="card-body">
+            <p>{{ object.description }}</p>
             <table class="table">
                 <tr>
-                    <th>URL</th>
-                    <td><a href="{{ object.url }}">{{ object.url }}</a></td>
+                    <th>Link</th>
+                    <td><a href="{{ object.link }}">{{ object.link }}</a></td>
                 </tr>
                 <tr>
-                    <th>Author</th>
-                    <td>{{ object.author }}</td>
+                    <th>Status</th>
+                    <td>{{ object.status }}</td>
                 </tr>
                 <tr>
-                    <th>Public</th>
-                    <td>{{ object.public }}</td>
+                    <th>Course</th>
+                    <td>{{ object.course }}</td>
                 </tr>
             </table>
         </div>
