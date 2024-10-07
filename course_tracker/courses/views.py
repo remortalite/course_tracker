@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
 from .models import Course
+from .forms import CourseForm
 from users.mixins import LoginRequiredWithMsgMixin
 
 
@@ -19,9 +20,9 @@ class CourseListView(LoginRequiredWithMsgMixin, ListView):
 
 class CourseCreateView(LoginRequiredWithMsgMixin, CreateView):
     model = Course
+    form_class = CourseForm
     success_url = reverse_lazy('courses.home')
     template_name = 'form.html'
-    fields = '__all__'
 
     message_no_auth = _('Please log in')
 
@@ -29,6 +30,12 @@ class CourseCreateView(LoginRequiredWithMsgMixin, CreateView):
         'header': _('Create course'),
         'button_name': _('Create'),
     }
+
+    def form_valid(self, form, *args, **kwargs):
+        obj = form.save(commit=False)
+        obj.author = self.request.user
+        obj.save()
+        return super().form_valid(form, *args, **kwargs)
 
 
 class CourseUpdateView(LoginRequiredWithMsgMixin, UpdateView):
