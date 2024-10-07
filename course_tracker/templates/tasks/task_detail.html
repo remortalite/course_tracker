@@ -15,11 +15,15 @@
             <table class="table">
                 <tr>
                     <th>Link</th>
-                    <td><a href="{{ object.link }}">{{ object.link }}</a></td>
+                    <td>
+                        {% if object.link %}
+                        <a href="{{ object.link }}">{{ object.link }}</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <th>Status</th>
-                    <td>{{ object.status }}</td>
+                    <td>{{ object.get_status_display }}</td>
                 </tr>
                 <tr>
                     <th>Course</th>
