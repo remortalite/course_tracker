@@ -2,6 +2,7 @@ from django.views.generic import (ListView, CreateView,
                                   UpdateView, DetailView, DeleteView)
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 from .models import Course
 from users.mixins import LoginRequiredWithMsgMixin
@@ -15,6 +16,11 @@ class CourseListView(LoginRequiredWithMsgMixin, ListView):
     extra_context = {
         'header': 'Courses',
     }
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(Q(public=True) | Q(author=self.request.user))
+        return qs
 
 
 class CourseCreateView(LoginRequiredWithMsgMixin, CreateView):
