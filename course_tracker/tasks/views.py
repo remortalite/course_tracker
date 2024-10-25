@@ -1,4 +1,8 @@
-from django.views.generic import CreateView, ListView, DetailView, UpdateView
+from django.views.generic import (CreateView,
+                                  ListView,
+                                  DetailView,
+                                  UpdateView,
+                                  DeleteView)
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
@@ -43,4 +47,15 @@ class TaskUpdateView(UpdateView):
     extra_context = {
         'header': _('Task update'),
         'button_name': _('Save'),
+    }
+
+
+class TaskDeleteView(DeleteView):
+    model = Task
+    success_url = reverse_lazy('tasks.home')
+    template_name = 'form.html'
+
+    extra_context = {
+        'header': _('Are you sure you want to delete the task?'),
+        'button_name': _('Yes, delete'),
     }
