@@ -27,7 +27,11 @@
                 </tr>
                 <tr>
                     <th>Course</th>
-                    <td><a href="{% url 'courses.detail' pk=object.course.id %}">{{ object.course }}</a></td>
+                    <td>
+                        {% if object.course %}
+                        <a href="{% url 'courses.detail' pk=object.course.id %}">{{ object.course }}</a>
+                        {% endif %}
+                    </td>
                 </tr>
             </table>
         </div>
