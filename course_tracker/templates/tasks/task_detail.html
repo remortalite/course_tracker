@@ -27,7 +27,7 @@
                 </tr>
                 <tr>
                     <th>Course</th>
-                    <td>{{ object.course }}</td>
+                    <td><a href="{% url 'courses.detail' pk=object.course.id %}">{{ object.course }}</a></td>
                 </tr>
             </table>
         </div>
