@@ -18,7 +18,7 @@
         {% for obj in object_list %}
         <tr>
             <td>
-                <a href="#">{{ obj.name }}</a>
+                <a href="{% url 'tasks.detail' pk=obj.id %}">{{ obj.name }}</a>
             </td>
             <td>
                 <a href="{{ obj.link }}">{{ obj.link|default:'' }}</a>
