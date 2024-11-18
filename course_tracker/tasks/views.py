@@ -11,7 +11,7 @@ from .models import Task
 
 class TaskCreateView(CreateView):
     model = Task
-    fields = '__all__'
+    fields = ('name', 'description', 'link', 'status', 'course')
     template_name = 'form.html'
     success_url = reverse_lazy('tasks.home')
 
@@ -31,7 +31,7 @@ class TaskListView(ListView):
 
 class TaskDetailView(DetailView):
     model = Task
-    fields = '__all__'
+    fields = ('name', 'description', 'link', 'status', 'course')
 
     extra_context = {
         'header': _('Task detail'),
@@ -40,7 +40,7 @@ class TaskDetailView(DetailView):
 
 class TaskUpdateView(UpdateView):
     model = Task
-    fields = '__all__'
+    fields = ('name', 'description', 'link', 'status', 'course')
     template_name = 'form.html'
     success_url = reverse_lazy('tasks.home')
 
