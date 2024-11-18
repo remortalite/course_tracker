@@ -1,0 +1,48 @@
+{% extends 'layout/base.html' %}
+
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block content %}
+
+<h1 class="h1 text-center">{{ header }}</h1>
+
+<div class="d-flex justify-content-center">
+    <div class="card col-9">
+        <div class="h3 card-header">{{ object.name }}</div>
+        <div class="card-body">
+            <p>{{ object.description }}</p>
+            <table class="table">
+                <tr>
+                    <th>Link</th>
+                    <td>
+                        {% if object.link %}
+                        <a href="{{ object.link }}">{{ object.link }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ object.get_status_display }}</td>
+                </tr>
+                <tr>
+                    <th>Course</th>
+                    <td>
+                        {% if object.course %}
+                        <a href="{% url 'courses.detail' pk=object.course.id %}">{{ object.course }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        {% if object.course.author == request.user %}
+        <div class="card-footer">
+            <a class="card-link" href="{% url 'tasks.update' pk=object.id %}">{% trans 'Update' %}</a>
+            <a class="card-link" href="{% url 'tasks.delete' pk=object.id %}">{% trans 'Delete' %}</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

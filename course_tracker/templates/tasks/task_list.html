@@ -1,0 +1,44 @@
+{% extends 'layout/base.html' %}
+
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block content %}
+
+<h1 class="h1">{{ header }}</h1>
+
+<a href="{% url 'tasks.create' %}" class="btn btn-primary">{% trans 'Create task' %}</a>
+
+<table class="table">
+    <thead>
+        <th>{% trans 'Name' %}</th>
+        <th>{% trans 'Link' %}</th>
+        <th>{% trans 'Status' %}</th>
+        <th>{% trans 'Course' %}</th>
+    </thead>
+    <tbody>
+        {% for obj in object_list %}
+        <tr>
+            <td>
+                <a href="{% url 'tasks.detail' pk=obj.id %}">{{ obj.name }}</a>
+            </td>
+            <td>
+                {% if obj.link %}
+                <a class="btn btn-light w-100 px-3" href="{{ obj.link }}" target="_blank">Go</a>
+                {% endif %}
+            </td>
+            <td>
+                {{ obj.get_status_display }}
+            </td>
+            <td>
+                {% if obj.course %}
+                <a href="{% url 'courses.detail' pk=obj.course.id %}">{{ obj.course|default:'' }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock content %}
